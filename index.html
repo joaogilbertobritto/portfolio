@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>João Gilberto Britto — Portfólio de painéis e controles</title>
+<meta name="description" content="Painéis e controles administrativo-financeiros construídos por João Gilberto Britto: cota parlamentar, emendas ao Orçamento, calendário de pagamentos, conferência fiscal, plano de saúde, inscrições e escala de plantão.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1f3864; --navy-2:#2d4e86; --ink:#1a1f28; --muted:#5d6878; --line:#dfe4ec;
+    --bg:#f6f7fa; --card:#ffffff; --ok:#1d6f4f; --warn:#9a5b00; --bad:#9b2c2c;
+    --ok-bg:#e7f4ee; --warn-bg:#fdf1dd; --bad-bg:#fbeaea;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:0 20px 72px}
+
+  /* ---------------------------------------------------------------- header */
+  header{background:var(--navy);color:#fff;padding:38px 0 30px;margin-bottom:0}
+  header .wrap{padding-bottom:0}
+  h1{margin:0 0 4px;font-size:30px;font-weight:700;letter-spacing:-.2px}
+  .role{margin:0;font-size:15px;color:#c9d6ec;font-weight:500}
+  .pitch{margin:14px 0 0;max-width:62ch;color:#e6ecf7;font-size:15px}
+
+  .notice{background:#fff4d6;border-bottom:1px solid #e8d7a8;color:#6b5110;
+          font-size:13.5px;padding:11px 0}
+  .notice .wrap{padding-bottom:0}
+  .notice strong{color:#50400c}
+
+  /* ----------------------------------------------------------------- cards */
+  section.card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+               padding:22px 22px 24px;margin-top:22px;box-shadow:0 1px 2px rgba(20,30,60,.05)}
+  .eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+           color:var(--navy-2);margin:0 0 5px}
+  h2{margin:0 0 8px;font-size:20px;font-weight:650;letter-spacing:-.15px}
+  .lede{margin:0 0 16px;color:var(--muted);max-width:74ch;font-size:14.5px}
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* --------------------------------------------------------------- controls */
+  .controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:flex-end;
+            padding:13px 14px;background:#f8f9fc;border:1px solid var(--line);
+            border-radius:9px;margin-bottom:16px}
+  .ctl{display:flex;flex-direction:column;gap:4px}
+  .ctl label{font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+  select,input[type=range]{font:inherit;font-size:13.5px}
+  select{padding:6px 9px;border:1px solid #c6cedd;border-radius:7px;background:#fff;color:var(--ink);min-width:150px}
+  select:focus-visible,button:focus-visible{outline:2px solid var(--navy-2);outline-offset:1px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{font:inherit;font-size:12.5px;padding:5px 11px;border-radius:999px;cursor:pointer;
+        border:1px solid #c6cedd;background:#fff;color:var(--muted)}
+  .chip[aria-pressed=true]{background:var(--navy);border-color:var(--navy);color:#fff;font-weight:600}
+
+  /* ------------------------------------------------------------------ stats */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:16px 0 4px}
+  .stat{border:1px solid var(--line);border-radius:9px;padding:11px 13px;background:#fcfdff}
+  .stat .k{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+  .stat .v{font-size:19px;font-weight:700;color:var(--navy);margin-top:3px;font-variant-numeric:tabular-nums}
+  .stat .s{font-size:12px;color:var(--muted);margin-top:1px}
+
+  /* ------------------------------------------------------------------ table */
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+     color:var(--muted);font-weight:700;padding:7px 9px;border-bottom:2px solid var(--line);white-space:nowrap}
+  td{padding:8px 9px;border-bottom:1px solid #eef1f6;vertical-align:top}
+  tbody tr:hover{background:#f8fafd}
+  .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .tag{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+  .t-ok{background:var(--ok-bg);color:var(--ok)}
+  .t-warn{background:var(--warn-bg);color:var(--warn)}
+  .t-bad{background:var(--bad-bg);color:var(--bad)}
+  .why{display:block;font-size:12px;color:var(--bad);margin-top:3px;max-width:42ch}
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .empty{padding:18px 10px;color:var(--muted);font-size:13.5px}
+
+  /* ------------------------------------------------------------------ chart */
+  .chart{width:100%;height:auto;display:block}
+  .bar{cursor:pointer}
+  .bar rect.v{transition:opacity .12s}
+  .bar:hover rect.v{opacity:.82}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:8px}
+  .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .sw-l{width:15px;height:0;border-top:2px dashed #8b95a6;border-radius:0;vertical-align:3px}
+  .chart-t{margin:14px 0 2px;font-size:13px;font-weight:600;color:var(--ink)}
+  .subteto{margin-top:16px;border:1px solid var(--line);border-radius:9px;padding:13px 14px;background:#fcfdff}
+  .subteto .st-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+  .subteto .st-t{font-size:13.5px;font-weight:600}
+  .subteto .st-t em{font-style:normal;color:var(--muted);font-weight:500}
+  .subteto .st-v{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .subteto .st-v b{color:var(--navy);font-size:15px}
+  .st-bar{position:relative;height:16px;border-radius:8px;background:#eef1f6;overflow:hidden}
+  .st-bar i{position:absolute;left:0;top:0;height:100%;border-radius:8px}
+  .st-foot{display:flex;justify-content:space-between;gap:10px;margin-top:7px;font-size:12px;color:var(--muted)}
+  .st-foot b{color:var(--ink)}
+  .ocup{position:relative;height:9px;width:86px;border-radius:5px;background:#eef1f6;overflow:hidden;display:inline-block;vertical-align:-1px;margin-right:5px}
+  .ocup i{position:absolute;left:0;top:0;height:100%;border-radius:5px}
+
+  /* ------------------------------------------------------------------- grid */
+  .scale{border-collapse:separate;border-spacing:0}
+  .scale td,.scale th{border:1px solid var(--line);font-size:12.5px;padding:6px 8px}
+  .scale td.gap{background:var(--bad-bg);color:var(--bad);font-weight:600}
+  .scale td.on{background:#f3f7fd}
+
+  /* ------------------------------------------------------------- aviso */
+  .fake{display:flex;align-items:center;gap:10px;background:repeating-linear-gradient(135deg,#fff6de,#fff6de 9px,#fdf1d0 9px,#fdf1d0 18px);
+        border:1.5px dashed #d9ab46;border-radius:9px;padding:9px 13px;margin:0 0 15px;color:#6b5110;font-size:12.5px;line-height:1.42}
+  .fake b{display:inline-block;background:#c9921f;color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.1em;
+          text-transform:uppercase;padding:3px 9px;border-radius:999px;white-space:nowrap;flex:none}
+  .fake-i{flex:none;width:19px;height:19px;color:#b3841c}
+  @media (max-width:640px){ .fake{flex-wrap:wrap;gap:7px} }
+
+  /* -------------------------------------------------------- calendário */
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:4px}
+  .cal .dow{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+            color:var(--muted);text-align:center;padding:4px 0 2px}
+  .cal .dia{border:1px solid var(--line);border-radius:7px;min-height:66px;padding:4px 5px;background:#fff;
+            display:flex;flex-direction:column;gap:3px}
+  .cal .dia.vazio{background:#fafbfd;border-style:dashed;border-color:#eceff5}
+  .cal .dia.fds{background:#fbfcfe}
+  .cal .dn{font-size:10.5px;font-weight:700;color:#9aa4b2;line-height:1}
+  .cal .dia.temconta .dn{color:var(--ink)}
+  .cal .ev{font-size:10.5px;line-height:1.25;border-radius:4px;padding:2px 4px;color:#fff;font-weight:600;
+           overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .cal .ev small{display:block;font-weight:500;opacity:.9;font-size:9.5px}
+  .ev-pago{background:#1d6f4f} .ev-aberto{background:#2d4e86}
+  .ev-perto{background:#9a5b00} .ev-atraso{background:#9b2c2c}
+  @media (max-width:640px){ .cal .dia{min-height:54px} .cal .ev{font-size:9.5px} .cal .ev small{display:none} }
+
+  /* ---------------------------------------------------------- ordem
+     As seções estão no HTML na ordem em que foram escritas; a ordem de
+     leitura é definida aqui, do que mais interessa a quem recruta para o
+     que menos interessa. Para reordenar, mexa só nestes números. */
+  #paineis{display:flex;flex-direction:column}
+  #s-pagamentos  {order:1}
+  #s-emendas     {order:2}
+  #s-cota        {order:3}
+  #s-comprovantes{order:4}
+  #s-saude       {order:5}
+  #s-inscricoes  {order:6}
+  #s-escala      {order:7}
+  #paineis > footer{order:99}
+
+  footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+         color:var(--muted);font-size:13px}
+  footer a{color:var(--navy-2)}
+  @media (max-width:640px){
+    h1{font-size:24px} .wrap{padding:0 14px 48px} section.card{padding:17px 15px 19px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>João Gilberto Costa Cruz Guimarães Britto</h1>
+    <p class="role">Assessor Técnico Adjunto na Primeira-Secretaria da Câmara dos Deputados · Bacharel em Ciências Contábeis (UnB)</p>
+    <p class="pitch">Sete ferramentas que construí para o ciclo administrativo-financeiro de um gabinete: calendário de pagamentos, emendas ao Orçamento, cota parlamentar, conferência fiscal com a SEFAZ, simulador de plano de saúde, inscrições com controle de vagas e escala de plantão. Todas estão em funcionamento nesta página, com dados fictícios. Mexa nos filtros.</p>
+  </div>
+</header>
+
+<div class="notice">
+  <div class="wrap"><strong>Demonstração:</strong> todos os números, nomes e municípios desta página são fictícios e foram criados só para mostrar como as ferramentas funcionam. Os painéis originais contêm dados internos da Casa e dados pessoais de servidores, e por isso não são publicados.</div>
+</div>
+
+<div class="wrap" id="paineis">
+
+  <!-- ============================================================ 1. COTA -->
+  <section class="card" id="s-cota">
+    <p class="eyebrow">Controle financeiro</p>
+    <h2>Painel da cota parlamentar</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Dados fictícios</b><span>Os valores e o teto geral foram inventados para esta demonstração. As rubricas são as do Ato da Mesa nº 43/2009 e o limite mensal de combustível, R$ 9.392,00, é o único número real desta página. O painel original usa dados internos da Casa e não é publicado.</span></div>
+    <p class="lede">A cota tem teto mensal e saldo que acumula ao longo do ano. Saber quanto sobrava exigia abrir os lotes um a um. O painel lê os lançamentos e responde em um olhar quanto foi gasto, em quê, e <b>quanto ainda dá para gastar</b>, acendendo o alerta quando uma rubrica foge do padrão do próprio gabinete. Combustível tem subteto próprio e é controlado à parte, logo abaixo do gráfico.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="cotaMes">Mês de referência</label>
+        <select id="cotaMes"></select>
+      </div>
+      <div class="ctl">
+        <label>Visão</label>
+        <div class="chips">
+          <button class="chip" id="vMes" aria-pressed="true">Mês</button>
+          <button class="chip" id="vAno" aria-pressed="false">Acumulado do ano</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats" id="cotaStats"></div>
+    <p class="chart-t" id="cotaTitulo"></p>
+    <svg id="cotaChart" class="chart" viewBox="0 0 900 268" role="img" aria-label="Gasto por rubrica"></svg>
+    <div class="legend">
+      <span><span class="sw" style="background:#2d4e86"></span>Quanto foi gasto nesta rubrica</span>
+      <span><span class="sw sw-l"></span>O normal da rubrica (média dos dez meses)</span>
+      <span><span class="sw" style="background:#c0392b"></span>Passou 40% do normal, vale conferir</span>
+    </div>
+    <div class="subteto" id="combBox"></div>
+    <p class="lede" style="margin:10px 0 0;font-size:13px">Cada barra é o gasto do mês em uma rubrica. O tracinho atravessado é quanto aquela rubrica costuma consumir por mês, calculado com os dez meses do próprio gabinete. O alerta não diz que houve erro. Diz que aquele valor fugiu do hábito da casa e merece um olhar antes de fechar o mês.</p>
+  </section>
+
+  <!-- ========================================================== 2. EMENDAS -->
+  <section class="card" id="s-emendas">
+    <p class="eyebrow">Orçamento</p>
+    <h2>Controle de emendas ao Orçamento</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Dados fictícios</b><span>Nenhum destes municípios existe e nenhum destes valores foi pedido por alguém. Os pedidos reais são de terceiros e não são publicados.</span></div>
+    <p class="lede">Os pedidos chegam por vários canais e cada modalidade tem regra própria. A planilha concentra todos e <b>trava o que não pode ser cadastrado no LEXOR</b>, com o motivo escrito na própria linha. Sem isso, o erro só aparece na hora do cadastro, quando já não há prazo para corrigir com o município.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="fArea">Área</label>
+        <select id="fArea"></select>
+      </div>
+      <div class="ctl">
+        <label for="fMod">Modalidade</label>
+        <select id="fMod"></select>
+      </div>
+      <div class="ctl">
+        <label for="fSit">Situação</label>
+        <select id="fSit"></select>
+      </div>
+      <div class="ctl">
+        <label>&nbsp;</label>
+        <div class="chips"><button class="chip" id="fLimpar" aria-pressed="false">Limpar filtros</button></div>
+      </div>
+    </div>
+
+    <div class="stats" id="emStats"></div>
+    <div class="scroll">
+      <table id="emTable">
+        <thead><tr>
+          <th>Município</th><th>Área</th><th>Modalidade</th>
+          <th class="num">Valor</th><th>Situação</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="empty" id="emEmpty" hidden>Nenhum pedido com esses filtros.</div>
+  </section>
+
+  <!-- ============================================================ 3. SAÚDE -->
+  <section class="card" id="s-saude">
+    <p class="eyebrow">Benefícios</p>
+    <h2>Simulador do plano de saúde</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Dados fictícios</b><span>Mensalidades, faixas etárias e valores de auxílio inventados. Não reproduzem a tabela de nenhuma operadora nem o que ninguém paga.</span></div>
+    <p class="lede">Na implantação do plano para os comissionados, todo mundo fazia a mesma pergunta: <b>quanto vai sair do meu bolso?</b> A resposta depende de três coisas que se cruzam, porque a mensalidade muda por plano, por faixa etária e por dependente, e o auxílio muda por cargo. O simulador faz a conta e separa as três partes, para a pessoa ver de onde vem o valor.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="sPlano">Plano</label>
+        <select id="sPlano"></select>
+      </div>
+      <div class="ctl">
+        <label for="sCargo">Cargo</label>
+        <select id="sCargo"></select>
+      </div>
+      <div class="ctl">
+        <label for="sFaixa">Faixa etária</label>
+        <select id="sFaixa"></select>
+      </div>
+      <div class="ctl">
+        <label for="sDep">Dependentes</label>
+        <select id="sDep"></select>
+      </div>
+    </div>
+
+    <div class="stats" id="sStats"></div>
+    <p class="lede" id="sNota" style="margin:12px 0 0;font-size:13px"></p>
+  </section>
+
+  <!-- ============================================================ 4. ESCALA -->
+  <section class="card" id="s-escala">
+    <p class="eyebrow">Gestão de pessoas</p>
+    <h2>Escala de plantão por setor</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Pessoas fictícias</b><span>A. Lima, B. Rocha e os demais não existem, são iniciais inventadas. A escala real tem nomes de servidores e não é publicada.</span></div>
+    <p class="lede">No recesso, cada setor precisa de pelo menos uma pessoa por dia, e montar isso no papel deixa buraco passar. A escala <b>marca sozinha o dia que ficou descoberto</b> e conta quantos plantões cada pessoa pegou, que é a parte que gera reclamação quando a divisão sai torta.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="eSemana">Semana</label>
+        <select id="eSemana"></select>
+      </div>
+    </div>
+
+    <div class="stats" id="escStats"></div>
+    <div class="scroll"><table class="scale" id="escTable"></table></div>
+  </section>
+
+  <!-- ====================================================== 5. COMPROVANTES -->
+  <section class="card" id="s-comprovantes">
+    <p class="eyebrow">Conformidade fiscal</p>
+    <h2>Conferência de comprovantes</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Dados fictícios</b><span>Fornecedores, notas e CNPJs inventados, e o número repetido é só um exemplo. Nenhuma empresa real aparece aqui e nenhum documento real é publicado.</span></div>
+    <p class="lede">Cupom impresso desbota, vem cortado e às vezes traz o CNPJ errado por um dígito só. Antes de lançar, <b>cada nota é conferida com o registro oficial na SEFAZ</b>. Se o destinatário registrado não bate, ou se o CNPJ aparece só no campo de observação, o documento não sustenta a prestação de contas e volta antes de virar problema.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="cFiltro">Mostrar</label>
+        <select id="cFiltro"><option>Todos</option><option>Só os que travam</option><option>Só os aprovados</option></select>
+      </div>
+    </div>
+
+    <div class="stats" id="cStats"></div>
+    <div class="scroll">
+      <table id="cTable">
+        <thead><tr><th>Fornecedor</th><th>Data</th><th class="num">Valor</th><th>CNPJ no cupom</th><th>Conferência</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ====================================================== 6. CALENDÁRIO -->
+  <section class="card" id="s-pagamentos">
+    <p class="eyebrow">Controle de pagamentos</p>
+    <h2>Calendário de pagamentos</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Dados fictícios</b><span>Fornecedores, valores e datas inventados. O calendário real traz contratos e contas do gabinete e não é publicado.</span></div>
+    <p class="lede">Um gabinete paga mais de dez contas por mês, cada uma em um dia e de um tamanho. Conferir contrato por contrato para saber o que falta é o jeito de deixar uma passar. O calendário põe <b>cada conta no dia em que ela vence</b> e marca o que já foi pago, então o que sobra é exatamente o que ainda precisa de ação.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="calMes">Mês</label>
+        <select id="calMes"></select>
+      </div>
+      <div class="ctl">
+        <label>Mostrar</label>
+        <div class="chips">
+          <button class="chip" id="calTodos" aria-pressed="true">Tudo</button>
+          <button class="chip" id="calAbertos" aria-pressed="false">Só o que falta pagar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats" id="calStats"></div>
+    <div class="cal" id="calGrade"></div>
+    <div class="legend" style="margin-top:10px">
+      <span><span class="sw" style="background:#1d6f4f"></span>Pago</span>
+      <span><span class="sw" style="background:#2d4e86"></span>A vencer</span>
+      <span><span class="sw" style="background:#9a5b00"></span>Vence em até 3 dias</span>
+      <span><span class="sw" style="background:#9b2c2c"></span>Venceu e não foi pago</span>
+    </div>
+    <div class="scroll" style="margin-top:14px">
+      <table id="calTabela">
+        <thead><tr><th>Vencimento</th><th>Conta</th><th>Tipo</th><th class="num">Valor</th><th>Situação</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================================================== 7. INSCRIÇÕES -->
+  <section class="card" id="s-inscricoes">
+    <p class="eyebrow">Automação de atendimento interno</p>
+    <h2>Inscrições com controle de vagas</h2>
+    <div class="fake"><svg class="fake-i" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg><b>Dados fictícios</b><span>Oficinas, horários e números de inscritos inventados. As inscrições reais têm nome e matrícula de servidores e não são publicadas.</span></div>
+    <p class="lede">Uma oficina com vinte vagas recebe quarenta pedidos, e a lista cresce no formulário sem ninguém olhando até alguém reclamar. Montei um Google Forms com Apps Script que <b>fecha a turma sozinho quando a última vaga é preenchida</b>, manda a confirmação por e-mail e põe quem chegou depois na espera, chamando a próxima pessoa a cada desistência. O painel abaixo é o que o organizador vê.</p>
+
+    <div class="controls">
+      <div class="ctl">
+        <label for="insEvento">Evento</label>
+        <select id="insEvento"></select>
+      </div>
+      <div class="ctl">
+        <label>Simular o que o script faz</label>
+        <div class="chips">
+          <button class="chip" id="insMais">Chega 1 inscrição</button>
+          <button class="chip" id="insDesist">1 desistência</button>
+          <button class="chip" id="insReset">Recomeçar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats" id="insStats"></div>
+    <div class="scroll">
+      <table id="insTabela">
+        <thead><tr><th>Turma</th><th>Quando</th><th class="num">Vagas</th><th class="num">Inscritos</th><th>Ocupação</th><th class="num">Espera</th><th>Situação</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="lede" id="insLog" style="margin:12px 0 0;font-size:13px"></p>
+  </section>
+
+  <footer>
+    <p><strong>João Gilberto Costa Cruz Guimarães Britto</strong> · Brasília/DF · joaogilbertobritto@gmail.com · <a href="https://www.linkedin.com/in/joao-gilberto-britto/">linkedin.com/in/joao-gilberto-britto</a></p>
+    <p style="margin-top:6px">Página de demonstração. Dados fictícios. Construída por mim com HTML, CSS e JavaScript; as ferramentas originais rodam em Excel e em painéis internos.</p>
+  </footer>
+</div>
+
+<script>
+"use strict";
+const BRL = n => n.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+const BRL2 = n => n.toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2});
+const el = id => document.getElementById(id);
+const opts = (sel, arr) => { sel.innerHTML = arr.map(v => `<option>${v}</option>`).join(""); };
+function stats(host, items){
+  host.innerHTML = items.map(i =>
+    `<div class="stat"><div class="k">${i.k}</div><div class="v">${i.v}</div>${i.s?`<div class="s">${i.s}</div>`:""}</div>`
+  ).join("");
+}
+
+/* ===================================================== 1. COTA PARLAMENTAR */
+const TETO = 54000;                       // teto mensal fictício
+const COMB_TETO = 9392;                   // subteto mensal de combustível: este valor é o real
+const RUBRICAS = ["Divulgação","Passagens aéreas","Combustíveis","Escritório de apoio","Locação de veículo","Telefonia","Serviços postais","Alimentação"];
+const MESES = ["jan","fev","mar","abr","mai","jun","jul","ago","set","out"];
+// matriz fictícia: mês x rubrica
+const GASTO = [
+  [12400,7200,7595,6000,4200,900,480,1500],[9800,8600,7228,6000,4200,870,510,1320],
+  [15200,5400,8281,9000,4200,910,460,1680],[8700,9100,6713,6000,4200,880,520,1450],
+  [11300,6800,7399,6000,4200,920,470,1390],[13900,7700,7987,9000,4200,890,500,1610],
+  [10100,8300,7056,6000,4200,900,455,1280],[16800,4900,8673,6000,4200,930,530,1740],
+  [9400,9600,6885,9000,4200,875,465,1360],[12700,7100,8420,15000,4200,905,495,1520],
+];
+const mediaRub = RUBRICAS.map((_,j) => GASTO.reduce((s,r)=>s+r[j],0)/GASTO.length);
+
+let cotaIdx = MESES.length-1, cotaAno = false;
+opts(el("cotaMes"), MESES.map(m => m+"/2026"));
+el("cotaMes").value = MESES[cotaIdx]+"/2026";
+
+function drawCota(){
+  const vals = cotaAno
+    ? RUBRICAS.map((_,j) => GASTO.reduce((s,r)=>s+r[j],0))
+    : GASTO[cotaIdx];
+  const refs = cotaAno ? mediaRub.map(m=>m*GASTO.length) : mediaRub;
+  const total = vals.reduce((a,b)=>a+b,0);
+  const teto = cotaAno ? TETO*GASTO.length : TETO;
+
+  stats(el("cotaStats"), [
+    {k:"Teto", v:BRL(teto), s: cotaAno ? "10 meses" : "mês"},
+    {k:"Gasto", v:BRL(total), s:(total/teto*100).toFixed(1).replace(".",",")+"% do teto"},
+    {k:"Saldo", v:BRL(teto-total), s:"disponível"},
+    {k:"Alertas", v:String(vals.filter((v,j)=>v>refs[j]*1.4).length), s:"rubricas acima do normal"},
+  ]);
+
+  el("cotaTitulo").textContent = cotaAno
+    ? "Gasto acumulado do ano em cada rubrica, comparado ao normal de cada uma"
+    : "Gasto de " + MESES[cotaIdx] + "/2026 em cada rubrica, comparado ao normal de cada uma";
+
+  const W=900,H=268,L=58,R=14,T=16,B=76, iw=W-L-R, ih=H-T-B;
+  const max = Math.max(...vals, ...refs)*1.12;
+  const bw = iw/RUBRICAS.length, pad = bw*0.26;
+  let s = "";
+  for(let g=0; g<=4; g++){
+    const y = T+ih-(ih*g/4);
+    s += `<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#eef1f6"/>`
+       + `<text x="${L-8}" y="${y+4}" text-anchor="end" font-size="10.5" fill="#8b95a6">${BRL(max*g/4)}</text>`;
+  }
+  vals.forEach((v,j)=>{
+    const x=L+bw*j+pad/2, w=bw-pad;
+    const h=ih*v/max, y=T+ih-h;
+    const rh=ih*refs[j]/max, ry=T+ih-rh;
+    const hot = v>refs[j]*1.4;
+    const dif = refs[j] ? Math.round((v/refs[j]-1)*100) : 0;
+    s += `<g class="bar"><title>${RUBRICAS[j]}: ${BRL2(v)}. O normal da rubrica é ${BRL2(refs[j])}, ${dif>=0?"+":""}${dif}%.</title>`
+       + `<rect class="v" x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${hot?"#c0392b":"#2d4e86"}"/>`
+       + `<line x1="${x-3}" y1="${ry}" x2="${x+w+3}" y2="${ry}" stroke="#8b95a6" stroke-width="2" stroke-dasharray="4 3"/>`
+       + `</g>`;
+    const palavras = RUBRICAS[j].split(" ");
+    const linha1 = palavras[0].length>13 ? palavras[0].slice(0,12)+"…" : palavras[0];
+    const linha2 = palavras.slice(1).join(" ");
+    s += `<text x="${L+bw*j+bw/2}" y="${T+ih+17}" text-anchor="middle" font-size="10.5" fill="#5d6878">${linha1}</text>`;
+    if(linha2) s += `<text x="${L+bw*j+bw/2}" y="${T+ih+29}" text-anchor="middle" font-size="10.5" fill="#5d6878">${linha2}</text>`;
+    s += `<text x="${L+bw*j+bw/2}" y="${T+ih+(linha2?44:32)}" text-anchor="middle" font-size="10" fill="${hot?"#c0392b":"#9aa4b2"}" font-weight="${hot?"700":"500"}">${dif>=0?"+":""}${dif}%</text>`;
+  });
+  el("cotaChart").innerHTML = s;
+
+  // ---- subteto da rubrica de combustível: a cota tem um limite próprio para ela
+  const jComb = RUBRICAS.indexOf("Combustíveis");
+  const usado = vals[jComb];
+  const limite = cotaAno ? COMB_TETO*GASTO.length : COMB_TETO;
+  const sobra = limite - usado;
+  const pctC = Math.min(usado/limite*100, 100);
+  const cor = pctC>=100 ? "#9b2c2c" : pctC>=85 ? "#9a5b00" : "#1d6f4f";
+  const rotulo = pctC>=100 ? "limite estourado" : pctC>=85 ? "perto do limite" : "dentro do limite";
+  el("combBox").innerHTML =
+    `<div class="st-h">
+       <span class="st-t">Combustível <em>(esta rubrica tem subteto próprio, separado do teto geral)</em></span>
+       <span class="st-v">${(usado/limite*100).toFixed(1).replace(".",",")}% usado · <b>${BRL2(sobra)}</b> ainda disponível</span>
+     </div>
+     <div class="st-bar"><i style="width:${pctC.toFixed(1)}%;background:${cor}"></i></div>
+     <div class="st-foot"><span>Gasto até aqui: <b>${BRL2(usado)}</b></span>
+       <span style="color:${cor};font-weight:600">${rotulo}</span>
+       <span>Limite ${cotaAno?"do período":"do mês"}: <b>${BRL2(limite)}</b></span></div>`;
+}
+el("cotaMes").onchange = e => { cotaIdx = MESES.indexOf(e.target.value.split("/")[0]); drawCota(); };
+el("vMes").onclick = () => { cotaAno=false; el("vMes").setAttribute("aria-pressed","true"); el("vAno").setAttribute("aria-pressed","false"); el("cotaMes").disabled=false; drawCota(); };
+el("vAno").onclick = () => { cotaAno=true; el("vAno").setAttribute("aria-pressed","true"); el("vMes").setAttribute("aria-pressed","false"); el("cotaMes").disabled=true; drawCota(); };
+
+/* ============================================================== 2. EMENDAS */
+const AREAS = ["Saúde","Educação","Infraestrutura","Cultura","Esporte","Assistência social"];
+const MODS  = ["Transferência especial","Transferência com finalidade definida","Custeio","Investimento"];
+const MUN = ["Serra Azul","Pedra Branca","Vale do Norte","Rio Claro d'Oeste","Bom Retiro","Santa Luzia do Campo",
+             "Alto Bonito","Córrego Novo","Lagoa Formosa","Itapema do Sul","Nova Esperança","Porto Velho do Leste",
+             "São Joaquim da Serra","Boa Vista do Rio","Monte Belo","Campo Verde","Riacho Fundo do Norte","Três Pontes",
+             "Vila Nova do Oeste","Cruzeiro do Campo","Jardim das Águas","Barra Mansa do Sul","Paraíso do Vale","Angico Novo"];
+// trava: transferência especial não admite finalidade específica de obra vinculada; valor mínimo por modalidade
+const MIN = {"Transferência especial":200000,"Transferência com finalidade definida":100000,"Custeio":50000,"Investimento":150000};
+const PEDIDOS = MUN.map((m,i)=>{
+  const area = AREAS[i%AREAS.length], mod = MODS[(i*3+1)%MODS.length];
+  const valor = [1800000,950000,2400000,420000,180000,3100000,760000,145000,1250000,540000,
+                 2750000,320000,1950000,88000,1400000,610000,2200000,470000,1100000,260000,
+                 1700000,390000,830000,2050000][i];
+  return {mun:m, area, mod, valor};
+});
+function avalia(p){
+  if(p.valor < MIN[p.mod])
+    return {sit:"Travada", cls:"t-bad", why:`Abaixo do piso de ${BRL(MIN[p.mod])} para ${p.mod.toLowerCase()}.`};
+  if(p.mod==="Transferência especial" && (p.area==="Cultura"||p.area==="Esporte"))
+    return {sit:"Pendência", cls:"t-warn", why:"Transferência especial exige indicação do ente, não da área. Confirmar com o município antes do cadastro."};
+  return {sit:"Validada", cls:"t-ok", why:null};
+}
+const LINHAS = PEDIDOS.map(p => ({...p, ...avalia(p)}));
+opts(el("fArea"), ["Todas", ...AREAS]);
+opts(el("fMod"), ["Todas", ...MODS]);
+opts(el("fSit"), ["Todas","Validada","Pendência","Travada"]);
+
+function drawEmendas(){
+  const a=el("fArea").value, m=el("fMod").value, s=el("fSit").value;
+  const rows = LINHAS.filter(r => (a==="Todas"||r.area===a) && (m==="Todas"||r.mod===m) && (s==="Todas"||r.sit===s));
+  const tot = rows.reduce((x,r)=>x+r.valor,0);
+  const nOk = rows.filter(r=>r.sit==="Validada").length;
+  stats(el("emStats"), [
+    {k:"Pedidos", v:String(rows.length), s:`de ${LINHAS.length} no total`},
+    {k:"Valor somado", v:BRL(tot)},
+    {k:"Prontos p/ LEXOR", v:String(nOk), s:`${rows.length-nOk} precisam de ação`},
+    {k:"Municípios", v:String(new Set(rows.map(r=>r.mun)).size)},
+  ]);
+  el("emTable").tBodies[0].innerHTML = rows.map(r=>`
+    <tr><td>${r.mun}</td><td>${r.area}</td><td>${r.mod}</td>
+    <td class="num">${BRL(r.valor)}</td>
+    <td><span class="tag ${r.cls}">${r.sit}</span>${r.why?`<span class="why">${r.why}</span>`:""}</td></tr>`).join("");
+  el("emEmpty").hidden = rows.length>0;
+  el("emTable").hidden = rows.length===0;
+}
+["fArea","fMod","fSit"].forEach(id => el(id).onchange = drawEmendas);
+el("fLimpar").onclick = () => { el("fArea").value="Todas"; el("fMod").value="Todas"; el("fSit").value="Todas"; drawEmendas(); };
+
+/* ========================================================== 3. PLANO SAÚDE */
+const PLANOS = {"Básico (enfermaria)":1.00,"Intermediário (apartamento)":1.38,"Pleno (apartamento + rede ampliada)":1.82};
+const FAIXAS = {"até 28 anos":262.40,"29 a 38 anos":318.70,"39 a 48 anos":401.90,"49 a 58 anos":536.20,"59 anos ou mais":812.50};
+const AUXILIO = {"CNE-15":184.00,"CNE-14":212.00,"CNE-13":248.00,"CNE-12":286.00,"CNE-11":331.00,"CNE-10":377.00};
+opts(el("sPlano"), Object.keys(PLANOS));
+opts(el("sCargo"), Object.keys(AUXILIO));
+opts(el("sFaixa"), Object.keys(FAIXAS));
+opts(el("sDep"), ["nenhum","1 dependente","2 dependentes","3 dependentes"]);
+el("sCargo").value = "CNE-14";
+el("sFaixa").value = "29 a 38 anos";
+
+function drawSaude(){
+  const fator = PLANOS[el("sPlano").value];
+  const base  = FAIXAS[el("sFaixa").value];
+  const aux   = AUXILIO[el("sCargo").value];
+  const nDep  = ["nenhum","1 dependente","2 dependentes","3 dependentes"].indexOf(el("sDep").value);
+  const titular = base*fator;
+  const deps = titular*0.72*nDep;                 // dependente entra com desconto
+  const mensal = titular+deps;
+  const auxTotal = aux*(1+0.35*nDep);             // auxílio cresce menos que o custo
+  const pago = Math.max(mensal-auxTotal, 0);
+  stats(el("sStats"), [
+    {k:"Mensalidade", v:BRL2(mensal), s: nDep ? `titular ${BRL2(titular)} + dependentes ${BRL2(deps)}` : "só titular"},
+    {k:"Auxílio-saúde", v:BRL2(auxTotal), s:`${el("sCargo").value}`},
+    {k:"Sai do bolso", v:BRL2(pago), s:"por mês"},
+    {k:"Cobertura do auxílio", v:(auxTotal/mensal*100).toFixed(0)+"%", s:"da mensalidade"},
+  ]);
+  el("sNota").textContent = nDep > 1
+    ? "A partir do segundo dependente o auxílio cobre uma fatia menor da conta. Foi o ponto que a simulação deixou visível e que mais pesou na escolha do plano."
+    : "Troque o plano e a faixa etária para ver como a conta muda. Valores e fatores são fictícios.";
+}
+["sPlano","sCargo","sFaixa","sDep"].forEach(id => el(id).onchange = drawSaude);
+
+/* =============================================================== 4. ESCALA */
+const SETORES = ["Secretaria","Protocolo","Finanças","Pessoal","Apoio"];
+const DIAS = ["22/dez","23/dez","26/dez","27/dez","29/dez","30/dez"];
+const SEMANAS = ["22 a 30 de dezembro","2 a 9 de janeiro"];
+const ESCALAS = [
+  [["A. Lima","B. Rocha","A. Lima","C. Dias","B. Rocha","A. Lima"],
+   ["D. Matos","D. Matos","E. Prado","", "E. Prado","D. Matos"],
+   ["F. Nunes","G. Alves","F. Nunes","G. Alves","F. Nunes","G. Alves"],
+   ["H. Castro","","H. Castro","C. Dias","H. Castro","C. Dias"],
+   ["B. Rocha","E. Prado","G. Alves","A. Lima","D. Matos","F. Nunes"]],
+  [["C. Dias","A. Lima","C. Dias","A. Lima","C. Dias","A. Lima"],
+   ["E. Prado","D. Matos","E. Prado","D. Matos","E. Prado","D. Matos"],
+   ["G. Alves","F. Nunes","G. Alves","F. Nunes","G. Alves","F. Nunes"],
+   ["H. Castro","B. Rocha","H. Castro","B. Rocha","H. Castro","B. Rocha"],
+   ["A. Lima","C. Dias","D. Matos","E. Prado","F. Nunes","G. Alves"]],
+];
+opts(el("eSemana"), SEMANAS);
+function drawEscala(){
+  const g = ESCALAS[SEMANAS.indexOf(el("eSemana").value)];
+  let gaps = 0; const carga = {};
+  g.forEach(r => r.forEach(n => { if(!n) gaps++; else carga[n]=(carga[n]||0)+1; }));
+  const nomes = Object.keys(carga).sort((a,b)=>carga[b]-carga[a]);
+  const maxC = carga[nomes[0]], minC = carga[nomes[nomes.length-1]];
+  stats(el("escStats"), [
+    {k:"Dias cobertos", v:`${SETORES.length*DIAS.length-gaps}/${SETORES.length*DIAS.length}`, s:"setor × dia"},
+    {k:"Buracos", v:String(gaps), s: gaps ? "em vermelho na grade" : "nenhum"},
+    {k:"Pessoas na escala", v:String(nomes.length)},
+    {k:"Maior × menor carga", v:`${maxC} × ${minC}`, s:"plantões por pessoa"},
+  ]);
+  let s = `<thead><tr><th>Setor</th>${DIAS.map(d=>`<th>${d}</th>`).join("")}</tr></thead><tbody>`;
+  SETORES.forEach((st,i)=>{
+    s += `<tr><th scope="row">${st}</th>` + g[i].map(n =>
+      n ? `<td class="on">${n}</td>` : `<td class="gap">sem cobertura</td>`).join("") + `</tr>`;
+  });
+  el("escTable").innerHTML = s+"</tbody>";
+}
+el("eSemana").onchange = drawEscala;
+
+/* ========================================================= 5. COMPROVANTES */
+const NOTAS=[
+ {f:"Posto Alvorada",d:"06/09",v:130.00,cupom:"68.258.252/0001-59",ok:true},
+ {f:"Auto Posto Phenix",d:"11/09",v:200.00,cupom:"68.268.252/0001-59",ok:false,
+  why:"Dígito divergente: o registro na SEFAZ traz 68.258.252/0001-59. O cupom impresso saiu com erro de leitura."},
+ {f:"Posto Central",d:"12/09",v:180.50,cupom:"68.258.252/0001-59",ok:true},
+ {f:"Mercadinho São Luiz",d:"14/09",v:96.40,cupom:"—",ok:false,
+  why:"CNPJ do destinatário só no campo de observação. Observação é texto livre e não tem validade fiscal."},
+ {f:"Posto Rodoviária",d:"18/09",v:250.00,cupom:"68.258.252/0001-59",ok:true},
+ {f:"Restaurante Sabor da Terra",d:"21/09",v:142.80,cupom:"68.258.252/0001-59",ok:true},
+ {f:"Posto Beira-Mar",d:"24/09",v:280.09,cupom:"68.258.252/0001-69",ok:false,
+  why:"Dígito verificador divergente do registrado na SEFAZ (…0001-59). Baixar o documento auxiliar pelo link oficial."},
+ {f:"Papelaria Modelo",d:"27/09",v:64.90,cupom:"68.258.252/0001-59",ok:true},
+];
+function drawNotas(){
+  const f=el("cFiltro").value;
+  const rows=NOTAS.filter(n=> f==="Todos" || (f==="Só os que travam" ? !n.ok : n.ok));
+  const trava=NOTAS.filter(n=>!n.ok);
+  stats(el("cStats"),[
+    {k:"Comprovantes",v:String(NOTAS.length),s:"no lote"},
+    {k:"Valor do lote",v:BRL2(NOTAS.reduce((a,b)=>a+b.v,0))},
+    {k:"Travados",v:String(trava.length),s:"voltam antes do envio"},
+    {k:"Valor retido",v:BRL2(trava.reduce((a,b)=>a+b.v,0)),s:"até a correção"},
+  ]);
+  el("cTable").tBodies[0].innerHTML=rows.map(n=>`
+    <tr><td>${n.f}</td><td>${n.d}</td><td class="num">${BRL2(n.v)}</td>
+    <td style="font-variant-numeric:tabular-nums">${n.cupom}</td>
+    <td>${n.ok?'<span class="tag t-ok">Confere com a SEFAZ</span>'
+              :'<span class="tag t-bad">Não sustenta</span><span class="why">'+n.why+'</span>'}</td></tr>`).join("");
+}
+el("cFiltro").onchange=drawNotas;
+
+/* ============================================================ 6. CALENDÁRIO */
+const CAL_MESES=["setembro/2026","outubro/2026","novembro/2026"];
+const CAL_INFO=[{ano:2026,mes:8,dias:30,inicio:2},{ano:2026,mes:9,dias:31,inicio:4},{ano:2026,mes:10,dias:30,inicio:0}];
+const HOJE_CAL={m:2,d:14};                       // 14 de novembro, no mês fictício de referência
+const CONTAS=[
+ {d:5,  n:"Locadora Planalto",      t:"Escritório de apoio",  v:4200.00},
+ {d:7,  n:"Telecom Brasil",         t:"Telefonia fixa",      v:612.40},
+ {d:10, n:"Gráfica Horizonte",      t:"Divulgação da atividade", v:3180.00},
+ {d:12, n:"Correios",               t:"Serviços postais",     v:486.20},
+ {d:15, n:"Vigilância Sentinela",   t:"Serviços de segurança", v:6000.00},
+ {d:18, n:"Posto Alvorada",         t:"Combustíveis",        v:1340.00},
+ {d:20, n:"Infotec Equipamentos",   t:"Locação de informática", v:2890.00},
+ {d:22, n:"Águas do Cerrado",       t:"Água",                v:218.70},
+ {d:25, n:"Energia DF",             t:"Energia elétrica",    v:1465.90},
+ {d:27, n:"Limpeza Aurora",         t:"Serviços gerais",     v:1980.00},
+ {d:28, n:"Telecom Brasil",         t:"Internet dedicada",   v:899.00},
+];
+// quais já foram pagas em cada mês (fictício): nos meses fechados, todas
+function situacao(c, mi){
+  if(mi < HOJE_CAL.m) return {s:"Pago", cls:"ev-pago", tag:"t-ok"};
+  if(c.d < HOJE_CAL.d - 1) return {s:"Pago", cls:"ev-pago", tag:"t-ok"};
+  if(c.d === HOJE_CAL.d - 1) return {s:"Venceu ontem, não foi pago", cls:"ev-atraso", tag:"t-bad"};
+  if(c.d <= HOJE_CAL.d + 3) return {s:"Vence em "+(c.d-HOJE_CAL.d)+" dia"+((c.d-HOJE_CAL.d)===1?"":"s"), cls:"ev-perto", tag:"t-warn"};
+  return {s:"A vencer", cls:"ev-aberto", tag:""};
+}
+let calIdx = 2, calSoAbertos = false;
+opts(el("calMes"), CAL_MESES); el("calMes").value = CAL_MESES[calIdx];
+const DOW=["dom","seg","ter","qua","qui","sex","sáb"];
+
+function drawCal(){
+  const info = CAL_INFO[calIdx];
+  const linhas = CONTAS.map(c => ({...c, ...situacao(c, calIdx)}));
+  const vis = calSoAbertos ? linhas.filter(l => l.s !== "Pago") : linhas;
+  const abertas = linhas.filter(l => l.s !== "Pago");
+  const atrasadas = linhas.filter(l => l.cls === "ev-atraso");
+  const total = linhas.reduce((a,b)=>a+b.v,0);
+  stats(el("calStats"), [
+    {k:"Contas no mês", v:String(linhas.length), s:BRL(total)+" somados"},
+    {k:"Já pagas", v:String(linhas.length-abertas.length), s:BRL(total-abertas.reduce((a,b)=>a+b.v,0))},
+    {k:"Ainda a pagar", v:String(abertas.length), s:BRL(abertas.reduce((a,b)=>a+b.v,0))},
+    {k:"Em atraso", v:String(atrasadas.length), s: atrasadas.length ? "exige ação hoje" : "nenhuma"},
+  ]);
+  let g = DOW.map(d=>`<div class="dow">${d}</div>`).join("");
+  for(let i=0;i<info.inicio;i++) g += `<div class="dia vazio"></div>`;
+  for(let d=1; d<=info.dias; d++){
+    const doSemana = (info.inicio + d - 1) % 7;
+    const evs = vis.filter(c => c.d === d);
+    g += `<div class="dia${evs.length?" temconta":""}${doSemana===0||doSemana===6?" fds":""}">`
+       + `<span class="dn">${d}</span>`
+       + evs.map(c=>`<span class="ev ${c.cls}" title="${c.n}, ${c.t}, ${BRL2(c.v)}, ${c.s}">${c.n}<small>${BRL(c.v)}</small></span>`).join("")
+       + `</div>`;
+  }
+  el("calGrade").innerHTML = g;
+  el("calTabela").tBodies[0].innerHTML = vis.slice().sort((a,b)=>a.d-b.d).map(c=>`
+    <tr><td>${String(c.d).padStart(2,"0")}/${String(info.mes+1).padStart(2,"0")}</td>
+    <td>${c.n}</td><td>${c.t}</td><td class="num">${BRL2(c.v)}</td>
+    <td>${c.tag?`<span class="tag ${c.tag}">${c.s}</span>`:c.s}</td></tr>`).join("");
+}
+el("calMes").onchange = e => { calIdx = CAL_MESES.indexOf(e.target.value); drawCal(); };
+el("calTodos").onclick = () => { calSoAbertos=false; el("calTodos").setAttribute("aria-pressed","true"); el("calAbertos").setAttribute("aria-pressed","false"); drawCal(); };
+el("calAbertos").onclick = () => { calSoAbertos=true; el("calAbertos").setAttribute("aria-pressed","true"); el("calTodos").setAttribute("aria-pressed","false"); drawCal(); };
+
+/* =========================================================== 7. INSCRIÇÕES */
+const EVENTOS=["Mês do Servidor 2026","Oficinas de saúde do trabalhador"];
+const TURMAS_BASE=[
+ [{t:"Auriculoterapia, manhã", q:"14/10, 9h",  vagas:20, ins:20, esp:7},
+  {t:"Auriculoterapia, tarde",  q:"14/10, 14h", vagas:20, ins:18, esp:0},
+  {t:"Ginástica laboral",       q:"16/10, 8h",  vagas:30, ins:12, esp:0},
+  {t:"Roda de conversa",        q:"21/10, 15h", vagas:25, ins:24, esp:0},
+  {t:"Oficina de postura",      q:"23/10, 10h", vagas:16, ins:16, esp:3}],
+ [{t:"Avaliação postural",      q:"05/11, 9h",  vagas:12, ins:12, esp:4},
+  {t:"Quick massage",           q:"05/11, 13h", vagas:18, ins:9,  esp:0},
+  {t:"Alongamento guiado",      q:"07/11, 8h",  vagas:24, ins:21, esp:0}]
+];
+const INS_INICIAL = "Use os botões acima para ver o que o script faz a cada inscrição que chega.";
+let insIdx=0, TURMAS=JSON.parse(JSON.stringify(TURMAS_BASE)), insLog=INS_INICIAL;
+opts(el("insEvento"), EVENTOS);
+
+function drawIns(){
+  const ts = TURMAS[insIdx];
+  const vagas = ts.reduce((a,b)=>a+b.vagas,0), ins = ts.reduce((a,b)=>a+b.ins,0);
+  const esp = ts.reduce((a,b)=>a+b.esp,0), cheias = ts.filter(t=>t.ins>=t.vagas).length;
+  stats(el("insStats"), [
+    {k:"Vagas ofertadas", v:String(vagas), s:`${ts.length} turmas`},
+    {k:"Inscritos", v:String(ins), s:(ins/vagas*100).toFixed(0)+"% de ocupação"},
+    {k:"Turmas fechadas", v:String(cheias), s: cheias ? "não aparecem mais no formulário" : "nenhuma lotou"},
+    {k:"Na lista de espera", v:String(esp), s: esp ? "entram por ordem de chegada" : "ninguém esperando"},
+  ]);
+  el("insTabela").tBodies[0].innerHTML = ts.map(t=>{
+    const pct = Math.min(t.ins/t.vagas*100,100);
+    const cheia = t.ins>=t.vagas, quase = !cheia && pct>=85;
+    const cor = cheia ? "#9b2c2c" : quase ? "#9a5b00" : "#1d6f4f";
+    const sit = cheia ? '<span class="tag t-bad">Fechada pelo script</span>'
+              : quase ? '<span class="tag t-warn">Últimas vagas</span>'
+                      : '<span class="tag t-ok">Aberta</span>';
+    return `<tr><td>${t.t}</td><td>${t.q}</td><td class="num">${t.vagas}</td><td class="num">${t.ins}</td>
+      <td><span class="ocup"><i style="width:${pct.toFixed(0)}%;background:${cor}"></i></span>${pct.toFixed(0)}%</td>
+      <td class="num">${t.esp||"—"}</td><td>${sit}</td></tr>`;}).join("");
+  el("insLog").textContent = insLog;
+}
+el("insEvento").onchange = e => { insIdx = EVENTOS.indexOf(e.target.value); insLog=INS_INICIAL; drawIns(); };
+el("insMais").onclick = () => {
+  const ts = TURMAS[insIdx];
+  const aberta = ts.find(t=>t.ins<t.vagas);
+  if(aberta){ aberta.ins++;
+    insLog = aberta.ins>=aberta.vagas
+      ? `Inscrição recebida em “${aberta.t}”. Era a última vaga, então o script fechou a turma e tirou a opção do formulário.`
+      : `Inscrição recebida em “${aberta.t}”. Confirmação enviada por e-mail, restam ${aberta.vagas-aberta.ins} vagas.`;
+  } else { const alvo = ts[0]; alvo.esp++;
+    insLog = `Todas as turmas estão fechadas, então a pessoa entrou na lista de espera de “${alvo.t}”, na posição ${alvo.esp}.`; }
+  drawIns();
+};
+el("insDesist").onclick = () => {
+  const ts = TURMAS[insIdx];
+  const alvo = ts.find(t=>t.ins>=t.vagas && t.esp>0) || ts.find(t=>t.ins>0);
+  if(!alvo) return;
+  if(alvo.esp>0){ alvo.esp--;
+    insLog = `Desistência em “${alvo.t}”. O script chamou a primeira pessoa da espera e avisou por e-mail, e a turma segue cheia.`;
+  } else { alvo.ins--;
+    insLog = `Desistência em “${alvo.t}”. Não havia ninguém na espera, então a vaga voltou a aparecer no formulário.`; }
+  drawIns();
+};
+el("insReset").onclick = () => { TURMAS = JSON.parse(JSON.stringify(TURMAS_BASE)); insLog="Voltou ao estado inicial."; drawIns(); };
+
+drawCota(); drawEmendas(); drawSaude(); drawEscala(); drawNotas(); drawCal(); drawIns();
+</script>
+</body>
+</html>
